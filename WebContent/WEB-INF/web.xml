@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>DocumentSimilarityApp</display-name>
+  <description>
+     2017 Assignment - A JEE Application for Measuring Document Similarity.
+
+     Make sure you encapsulate any environmental variables like system paths, connection strings, class names
+     and the like in this deployment descriptor. These can be configured as context-param elements and then
+     read and initialised by a start-up servlet.
+  </description>
+  
+  
+  <!-- A context is a variable with application wide scope. These can be accessed easily in a Servlet or JSP page-->
+  <!-- This is how you define global variables -->
+  <!-- Might want to declare some of these -->
+  <context-param>
+    <param-name>DATABASE_PATH<!--DB_PATH--></param-name>
+	<!-- This is where db goes, put jaccard db here / -->
+    <param-value>Some Value</param-value>
+    <!-- <param-value>/home/Adrian/Documents/Workspace/DocumentSimilarityApp/WebContent/WEB-INF/secure</param-value> -->
+	<!-- never put it in web context!!!/ -->
+	<!-- <param-value>/web/db/secure/db.yap</param-value>-->
+  </context-param>
+  
+  <context-param>
+    <param-name>SHINGLE_SIZE</param-name>
+    <param-value>3</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>BLOCKING_QUEUE_SIZE</param-name>
+    <param-value>100</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>MINHASH_NUMBER</param-name>
+    <param-value>200 <!-- 200 to 300 should be enough--></param-value>
+  </context-param>
+
+  <!-- A servlet class must be bound to a name -->
+  <!-- Servlets only need 2 types, this one and one that's mapped to it -->
+  <servlet>
+    <servlet-name>service-request-handler</servlet-name>
+    <servlet-class>ie.gmit.sw.ServiceHandler</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  
+  <!-- A servlet name must be bound to a URL mapping, i.e. localhost:8080/doProcess executes the servlet ie.gmit.sw.ServiceHandler in WEB-INF/classes -->
+  <servlet-mapping>
+    <servlet-name>service-request-handler</servlet-name>
+	<!-- Go to the root of the current web application (/)... jaccard -->
+    <url-pattern>/doProcess</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>service-poll-handler</servlet-name>
+    <servlet-class>ie.gmit.sw.ServicePollHandler</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>service-poll-handler</servlet-name>
+    <url-pattern>/poll</url-pattern>
+  </servlet-mapping>
+</web-app>
